@@ -6,8 +6,8 @@
     <a href="https://github.com/sayalaruano/DengueDrugRep/blob/main/LICENSE.md">
         <img alt="PyPI - License" src="https://img.shields.io/pypi/l/bioregistry" />
     </a>
-        <a href="https://doi.org/10.5281/zenodo.10005226">
-        <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.10005226.svg" alt="DOI">
+        <a href="https://zenodo.org/doi/10.5281/zenodo.10010151">
+        <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.10010151.svg" alt="DOI">
     </a>
     <a href="https://colab.research.google.com/github/sayalaruano/DengueDrugRep/blob/main/Training_KGNN_models_Pykeen.ipynb">
         <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="colab">
@@ -46,7 +46,7 @@ The drug repurposing problem can be formulated as a link prediction task in a KG
 
 ## **Dataset**
 
-The [DRKG][drkg] is a large-scale biomedical KG that integrates information from six existing databases: DrugBank, Hetionet, Global network of biomedical relationships (GNBR), String, IntAct, and DGIdb. This KG contains 97.238 nodes belonging to 13 entity-types (e.g., drugs, diseases, genes, etc.) and 5.874.257 triplets belonging to 107 edge-types. The following figure shows a schematic representation of the DRKG:
+The [DRKG][drkg] is a large-scale biomedical KG that integrates information from six existing databases: [DrugBank][drugbank], [Hetionet][hetionet], Global network of biomedical relationships ([GNBR][gnbr]), [String][string], [IntAct][intact], and [DGIdb][dgidb]. This KG contains 97.238 nodes belonging to 13 entity-types (e.g., drugs, diseases, genes, etc.) and 5.874.257 triplets belonging to 107 edge-types. The following figure shows a schematic representation of the DRKG:
 
 <p align="center">
 <figure>
@@ -55,7 +55,9 @@ The [DRKG][drkg] is a large-scale biomedical KG that integrates information from
 </figure>
 </p>
 
-The [PyKEEN][pykeen] library implements the DRKG as part of its datasets, so it is possible to load the DRKG directly from the library. The DRKG was split into training, validation, and test sets. The training set contains 4.699.405 triplets, the validation set contains 587.426 triplets, and the test set contains 587.426 triplets. The training partition was used to train the models, and the validation partition was used to evaluate the models. The test dataset was used to make predictions on unseen data.
+The [PyKEEN][pykeen] library implements the DRKG as part of its datasets, so it is possible to load the DRKG directly from the library. 
+
+The DRKG was split into training, validation, and test sets. The training set contains 4.699.405 triplets, the validation set contains 587.426 triplets, and the test set contains 587.426 triplets. The training partition was used to train the models, and the validation partition was used to evaluate the models. The test dataset was used to make predictions on unseen data.
 
 ## **Graph neural network models**
 
@@ -65,13 +67,13 @@ First, the models were trained for 50 epochs with a general evaluation procedure
 
 You can find the code for this part on the Jupyter Notebook [Training_KGNN_models_Pykeen.ipynb][training_script].
 
-The trained models are available through Zenodo with the following DOI: [10.5281/zenodo.10005226][models_doi].
+The trained models are available through Zenodo with the following DOI: [10.5281/zenodo.10010151][models_doi].
 
 ## **Evaluation**
 
-The KGNN models were evaluated: a) intrinsically, within the scope of the knowledge graph and its defined triples, and b) externally, against a ground truth (drugs on clinical trials to treat dengue) to understand their predictive power over real-world information.
+The KGNN models were evaluated: **a)** intrinsically, within the scope of the knowledge graph and its defined triples, and **b)** externally, against a ground truth (drugs on clinical trials to treat dengue) to understand their predictive power over real-world information.
 
-Before running the evaluation scripts, you should download the trained models from Zenodo and save them in a folder called `Models/`.
+Before running the evaluation scripts, you should download the trained models from [Zenodo][models_doi] and save them in a folder called `Models/`.
 
 ### **Internal evaluation**
 
@@ -83,6 +85,8 @@ Two standard rank-based metrics were used to measure each KGNN model’s intrins
 All the internal evaluation metrics were calculated using the [PyKEEN][pykeen] library. I reported the optimistic rank values for both the tail and head entities, which assumes that the true choice is on the first position of all those with equal score when there are multiple choices. More details about how the evaluation for KGNN models works in PyKEEN can be found [here][pykeen_evaluation].
 
 Check it out the code for this part of the project in the Python script [Int_performance_evaluation_KGNNs.py][int_eval_script].
+
+The results for this part are available in the (Internal_evaluation)[Results/Internal_evaluation] folder.
 
 ### **External evaluation**
 
@@ -97,6 +101,8 @@ For all these metrics, the smaller the value, the better, meaning that a model w
 The ground truth database was obtained from the [ClinicalTrials.gov][clinicaltrials] website. I searched for clinical trials that use drugs to treat dengue. I found 21 clinical trials that use 16 drugs to treat this disease. Also, I look for the IDs of these drugs from the 17 compound databases in the DRKG using the CHEMBL API and manual validation. The list of the drugs in the ground truth database and their IDs in the compound databases of DRKG are available in the [dengue_validated_drugs_clin.csv][clin_trial_drugs].
 
 You can find the code for this part on the Python script [External_performance_evaluation_KGNNs.py][ext_eval_script].
+
+The results for this part are available in the (External_evaluation)[Results/External_evaluation] and (CompoundDisease_predictions)[Results/CompoundDisease_predictions] folders.
 
 ## **How to set up the environment to run the code?**
 
@@ -176,4 +182,10 @@ If you have comments or suggestions about this project, you can [open an issue](
 [ext_eval_script]: ./External_performance_evaluation_KGNNs.py
 [clin_trial_drugs]: ./Data/Clinical_trials/dengue_validated_drugs_clin.csv
 [clinicaltrials]: https://clinicaltrials.gov/
-[models_doi]: https://doi.org/10.5281/zenodo.10005226
+[models_doi]: https://zenodo.org/doi/10.5281/zenodo.10010151
+[drugbank]: https://go.drugbank.com/
+[hetionet]: https://het.io/about/
+[gnbr]: https://doi.org/10.1093/bioinformatics/bty114
+[string]: https://string-db.org/
+[intact]: https://www.ebi.ac.uk/intact/
+[dgidb]: https://www.dgidb.org/
