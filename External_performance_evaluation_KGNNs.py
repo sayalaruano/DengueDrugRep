@@ -143,7 +143,7 @@ def calc_rank_metrics(mode_name, model_pred, validated_drugs):
     median_rank = validated_drugs_idxs[middle_index]
 
     # Create a dataframe with the results
-    rank_metrics = pd.DataFrame(data={mode_name: [lowest_rank, median_rank, highest_rank]}, index=['First_hit', 'Median_hit', 'Last_hit'])
+    rank_metrics = pd.DataFrame(data={mode_name: [lowest_rank, median_rank, highest_rank]}, index=['First_hit', 'Median_hit', 'Last_hit']).T
 
     return rank_metrics
 
@@ -181,7 +181,7 @@ Drugbank_compound_disease = 'DRUGBANK::treats::Compound:Disease'
 # ERMLP models predictions
 # General evaluation
 ERMLP_pred_dengue_genev, ERMLP_pred_dengue_genev_train = make_pred_and_compfilt(model=ERMLP_model_genev, 
-                                                                                relation=Drugbank_compound_disease, 
+                                                                                relation=GNBR_compound_disease, 
                                                                                 disease=dengue_entity_drkg, 
                                                                                 train_triples=drkg_train, 
                                                                                 test_triplets=drkg_test)
@@ -191,7 +191,7 @@ ERMLP_pred_dengue_genev_train.to_csv('Results/Triplets_in_train/General_evaluati
 
 # Drug repurposing evaluation
 ERMLP_pred_dengue_drev, ERMLP_pred_dengue_drev_train = make_pred_and_compfilt(model=ERMLP_model_drev,
-                                                                            relation=Drugbank_compound_disease, 
+                                                                            relation=GNBR_compound_disease, 
                                                                             disease=dengue_entity_drkg, 
                                                                             train_triples=drkg_train, 
                                                                             test_triplets=drkg_test)
@@ -202,7 +202,7 @@ ERMLP_pred_dengue_drev_train.to_csv('Results/Triplets_in_train/Drug_rep_evaluati
 # DistMult models predictions
 # General evaluation
 DistMult_pred_dengue_genev, DistMult_pred_dengue_genev_train = make_pred_and_compfilt(model=DistMult_model_genev, 
-                                                                                      relation=Drugbank_compound_disease, 
+                                                                                      relation=GNBR_compound_disease, 
                                                                                       disease=dengue_entity_drkg, 
                                                                                       train_triples=drkg_train, 
                                                                                       test_triplets=drkg_test)
@@ -212,7 +212,7 @@ DistMult_pred_dengue_genev_train.to_csv('Results/Triplets_in_train/General_evalu
 
 # Drug repurposing evaluation
 DistMult_pred_dengue_drev, DistMult_pred_dengue_drev_train = make_pred_and_compfilt(model=DistMult_model_drev, 
-                                                                                    relation=Drugbank_compound_disease, 
+                                                                                    relation=GNBR_compound_disease, 
                                                                                     disease=dengue_entity_drkg, 
                                                                                     train_triples=drkg_train, 
                                                                                     test_triplets=drkg_test)
@@ -223,7 +223,7 @@ DistMult_pred_dengue_drev_train.to_csv('Results/Triplets_in_train/Drug_rep_evalu
 # PairE models predictions
 # General evaluation
 PairE_pred_dengue_genev, PairE_pred_dengue_genev_train = make_pred_and_compfilt(model=PairE_model_genev, 
-                                                                                relation=Drugbank_compound_disease, 
+                                                                                relation=GNBR_compound_disease, 
                                                                                 disease=dengue_entity_drkg, 
                                                                                 train_triples=drkg_train, 
                                                                                 test_triplets=drkg_test)
@@ -233,7 +233,7 @@ PairE_pred_dengue_genev_train.to_csv('Results/Triplets_in_train/General_evaluati
 
 # Drug repurposing evaluation
 PairE_pred_dengue_drev, PairE_pred_dengue_drev_train = make_pred_and_compfilt(model=PairE_model_drev, 
-                                                                                relation=Drugbank_compound_disease, 
+                                                                                relation=GNBR_compound_disease, 
                                                                                 disease=dengue_entity_drkg, 
                                                                                 train_triples=drkg_train, 
                                                                                 test_triplets=drkg_test)
@@ -244,7 +244,7 @@ PairE_pred_dengue_drev_train.to_csv('Results/Triplets_in_train/Drug_rep_evaluati
 # TransR models predictions
 # General evaluation
 TransR_pred_dengue_genev, TransR_pred_dengue_genev_train = make_pred_and_compfilt(model=TransR_model_genev, 
-                                                                                    relation=Drugbank_compound_disease, 
+                                                                                    relation=GNBR_compound_disease, 
                                                                                     disease=dengue_entity_drkg, 
                                                                                     train_triples=drkg_train, 
                                                                                     test_triplets=drkg_test)
@@ -254,7 +254,7 @@ TransR_pred_dengue_genev_train.to_csv('Results/Triplets_in_train/General_evaluat
 
 # Drug repurposing evaluation
 TransR_pred_dengue_drev, TransR_pred_dengue_drev_train = make_pred_and_compfilt(model=TransR_model_drev, 
-                                                                                    relation=Drugbank_compound_disease, 
+                                                                                    relation=GNBR_compound_disease, 
                                                                                     disease=dengue_entity_drkg, 
                                                                                     train_triples=drkg_train, 
                                                                                     test_triplets=drkg_test)
@@ -283,13 +283,25 @@ DistMult_rank_metrics_drev = calc_rank_metrics('DistMult_drev', DistMult_pred_de
 PairE_rank_metrics_drev = calc_rank_metrics('PairE_drev', PairE_pred_dengue_drev, clin_drugs)
 TransR_rank_metrics_drev = calc_rank_metrics('TransR_drev', TransR_pred_dengue_drev, clin_drugs)
 
-# Concatenate the results for all the models into a single dataframe
-ext_val_rank_met = pd.concat([ERMLP_rank_metrics_genev, ERMLP_rank_metrics_drev, 
-                              DistMult_rank_metrics_genev, DistMult_rank_metrics_drev,
-                              PairE_rank_metrics_genev, PairE_rank_metrics_drev,
-                              TransR_rank_metrics_genev, TransR_rank_metrics_drev], axis=1)
+#%%
+# Concatenate the results for general evaluation models into a single dataframe
+ext_val_rank_met_genev = pd.concat([ERMLP_rank_metrics_genev, DistMult_rank_metrics_genev, 
+                                    PairE_rank_metrics_genev, TransR_rank_metrics_genev], 
+                                    axis=0)
 
-# Export the results as a csv file
-ext_val_rank_met.to_csv('Results/External_evaluation/External_evaluation_Drugbank_rank_metrics.csv', sep=',', index=True)
+# Rename indices of the dataframe
+ext_val_rank_met_genev.index = ['ERMLP', 'DistMult', 'PairE', 'TransR']
+
+# Concatenate the results for drug repurposing evaluation models into a single dataframe
+ext_val_rank_met_drev = pd.concat([ERMLP_rank_metrics_drev, DistMult_rank_metrics_drev,
+                                      PairE_rank_metrics_drev, TransR_rank_metrics_drev],
+                                        axis=0)
+
+# Rename indices of the dataframe
+ext_val_rank_met_drev.index = ['ERMLP', 'DistMult', 'PairE', 'TransR']
+
+# Export the results as a csv files
+ext_val_rank_met_genev.to_csv('Results/External_evaluation/External_evaluation_Dengue_rank_metrics_genev.csv', sep=',', index=True)
+ext_val_rank_met_drev.to_csv('Results/External_evaluation/External_evaluation_Dengue_rank_metrics_drev.csv', sep=',', index=True)
 
 #%%

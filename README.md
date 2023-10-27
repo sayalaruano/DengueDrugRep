@@ -142,7 +142,7 @@ The main files and directories of this repository are:
 |[Internal_performance_evaluation_KGNNs.py](Internal_performance_evaluation_KGNNs.py)|Python script to perform the internal evaluation of the trained KGNN models|
 |[External_performance_evaluation_KGNNs.py](External_performance_evaluation_KGNNs.py)|Python script to perform the external evaluation of the trained KGNN models|
 |[DRKG_compounds_names_preprocessing.py](External_performance_evaluation_KGNNs.py)|Python script to obtain the IDs and datasource of the compounds in the DRKG|
-|[DengueDrugRep_presentation.pdf](DengueDrugRep_presentation.pdf)|Presentation with detailed explanation of the project|
+|[DengueDrugRep.pdf](DengueDrugRep.pdf)|Presentation with detailed explanation of the project|
 |[Pipfile](Pipfile)|File with names and versions of packages installed in the virtual environment|
 |[requeriments.txt](requeriments.txt)|File with names and versions of packages installed in the virtual environment|
 |[Pipfile.lock](Pipfile.lock)|Json file that contains versions of packages, and dependencies required for each package|
