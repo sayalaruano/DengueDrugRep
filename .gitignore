@@ -1,5 +1,5 @@
-.ipynb_checkpoints/
-Retrieve_drug_IDS.py
-training.py
+Scripts/.ipynb_checkpoints/
+Scripts/Retrieve_drug_IDS.py
+Scripts/training.py
 /Models
 Models.zip

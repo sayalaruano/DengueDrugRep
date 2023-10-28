@@ -21,6 +21,7 @@
 ## **Table of contents:**
 - [About the project](#about-the-project)
 - [Dataset](#dataset)
+- [Exploratory data analysis](#exploratory-data-analysis)
 - [Graph neural network models](#graph-neural-network-models)
 - [Evaluation](#evaluation)
 - [How to set up the environment to run the code?](#how-to-set-up-the-environmen-to-run-the-code)
@@ -33,20 +34,24 @@
 
 [Dengue][dengue] is a viral infection transmitted to humans through the bite of Aedes mosquitoes. This disease is a  neglected tropical disease that mainly affects poor populations with no access to safe water, sanitation, and high-quality healthcare. Currently, there is no specific treatment for dengue and the focus is on treating pain symptoms. Therefore, there is an urgent need to find new drugs to treat this disease.
 
-The goal of this project is to predict new repurposed drugs for dengue using a biomedical knowledge graph and graph neural networks. A knowledge graph (KG) is a heterogeneous network with different types of nodes and edges, where nodes represent entities (e.g., drugs, diseases, genes, etc.) and edges are semantic relationships between entities (e.g., drug-disease, drug-gene, etc.). Graph neural networks (GNNs) are a class of neural networks that can learn from graph data. The following figure illustrates the general structure of a knowledge graph neural network (KGNN): 
+The goal of this project is to predict new repurposed drugs for dengue using a biomedical knowledge graph and graph neural networks. A knowledge graph (KG) is a heterogeneous network with different types of nodes and edges that incorporate semmantic information. A KG is composed of a set of triplets (subject, predicate, object) that represent relationships between entities. For example, a drug-disease triplet represents the relationship between a drug (subject) and a disease (object) through a predicate (e.g., treats, causes, etc.). The advantage of using a KG is that it allows the integration of different types of data from different sources.
 
+Graph neural networks (GNNs) are a class of neural networks that can learn from graph data. GNNs have been used to solve different tasks in KGs, such as node classification, link prediction, and entity alignment. The drug repurposing problem can be formulated as a link prediction task in a KG. The goal is to predict new drug-disease associations for Dengue. 
+
+The following figure shows the general workflow of this project:
 <p align="center">
 <figure>
-  <img src="./img/KGNN_pipeline.png" alt="my alt text"/>
-  <figcaption><strong>Figure 1.</strong> Anatomy of a Knowledge Graph Neural Network. Obtained from <a href="https://kge-tutorial-ecai2020.github.io/">[1]</a>. </figcaption>
+  <img src="./img/DengueDrugRep_workflow.svg" alt="my alt text"/>
+  <figcaption><strong>Figure 1.</strong> DengueDrugRep workflow </a>. </figcaption>
 </figure>
 </p>
 
-The drug repurposing problem can be formulated as a link prediction task in a KG. The goal is to predict new drug-disease associations.
 
 ## **Dataset**
 
-The [DRKG][drkg] is a large-scale biomedical KG that integrates information from six existing databases: [DrugBank][drugbank], [Hetionet][hetionet], Global network of biomedical relationships ([GNBR][gnbr]), [String][string], [IntAct][intact], and [DGIdb][dgidb]. This KG contains 97.238 nodes belonging to 13 entity-types (e.g., drugs, diseases, genes, etc.) and 5.874.257 triplets belonging to 107 edge-types. The following figure shows a schematic representation of the DRKG:
+The [DRKG][drkg] is a large-scale biomedical KG that integrates information from six existing databases: [DrugBank][drugbank], [Hetionet][hetionet], Global network of biomedical relationships ([GNBR][gnbr]), [String][string], [IntAct][intact], and [DGIdb][dgidb]. This KG contains 97.238 nodes belonging to 13 entity-types (e.g., drugs, diseases, genes, etc.) and 5.874.257 triplets belonging to 107 edge-types. Also, the DRKG contains 24.313 compounds from 17 different databases (the list of databases' names is available in the [Names_datasources_compounds_DRKG.csv][names_db_compounds] file). 
+
+The following figure shows a schematic representation of the DRKG:
 
 <p align="center">
 <figure>
@@ -59,7 +64,46 @@ The [PyKEEN][pykeen] library implements the DRKG as part of its datasets, so it 
 
 The DRKG was split into training, validation, and test sets. The training set contains 4.699.405 triplets, the validation set contains 587.426 triplets, and the test set contains 587.426 triplets. The training partition was used to train the models, and the validation partition was used to evaluate the models. The test dataset was used to make predictions on unseen data.
 
+## **Exploratory data analysis**
+In this project, I focused on the drug-disease relationships in the DRKG. So, the first step was to explore what are the predicates that represent these relationships, obtaining the following list:
+
+| Drug-Disease predicate |
+| ---------------------- |
+| DRUGBANK:: treats::Compound:Disease |
+| GNBR:: C::Compound:Disease |
+| GNBR:: J::Compound:Disease |
+| GNBR:: Mp::Compound:Disease |
+| GNBR:: Pa::Compound:Disease |
+| GNBR:: Pr::Compound:Disease |
+| GNBR:: Sa::Compound:Disease |
+| GNBR:: T::Compound:Disease |
+| Hetionet:: CpD::Compound:Disease |
+| Hetionet:: CtD::Compound:Disease |
+
+More details about the predicates, their provenance and meaning are available in the [relation_glossary.tsv][drkg_schema] file and the DRKG [GitHub repository][drkg].
+
+Next, I explored the number of compounds per database in the DRKG. The following figure shows the results:
+<p align="center">
+<figure>
+  <img src="./img/Compounds_DRKG_distribution.png" alt="my alt text"/>
+  <figcaption><strong>Figure 3.</strong> Distribution of compounds per database in DRKG</a>. </figcaption>
+</figure>
+</p>
+
+The code for this part is available in the Python script [DRKG_compounds_names_preprocessing.py][compounds_names_script].
+
 ## **Graph neural network models**
+
+In general, GNNs represent entities and relationships in a KG as vectors in a low-dimensional space (embeddings). Then, these vectors are scored to predict new triplets. The scoring function can be based on distance or similarity measures, depending on the type of GNN. During the training process, there is a loss function that measures the difference between the predicted and the true triplets. The goal is to minimize this loss function. Also, there is a negative generator that creates false triplets to train the model. The negative generator creates triplets by replacing the subject, predicate, or object of a true triplet with a random entity of the same type.
+
+The following figure illustrates the general structure of a knowledge graph neural network (KGNN): 
+
+<p align="center">
+<figure>
+  <img src="./img/KGNN_pipeline.png" alt="my alt text"/>
+  <figcaption><strong>Figure 4.</strong> Anatomy of a Knowledge Graph Neural Network. Obtained from <a href="https://kge-tutorial-ecai2020.github.io/">[1]</a>. </figcaption>
+</figure>
+</p>
 
 For this project, four GNN algorithms, namely [PairRE][pairRE], [DistMult][distmult], [ERMLP][ermlp], and [TransR][transr], were trained to predict new drug-disease associations using the Drug Repurposing Knowledge Graph ([DRKG][drkg]). These algorithms are implemented in the [PyKEEN][pykeen] library. The models were trained using the Marging Ranking Loss function and a random seed of 1235. The rest of the hyperparameters were the default values of the library. 
 
@@ -86,7 +130,7 @@ All the internal evaluation metrics were calculated using the [PyKEEN][pykeen] l
 
 Check it out the code for this part of the project in the Python script [Int_performance_evaluation_KGNNs.py][int_eval_script].
 
-The results for this part are available in the (Internal_evaluation)[Results/Internal_evaluation] folder.
+The results for this part are available in the [Internal_evaluation](Results/Internal_evaluation) folder.
 
 ### **External evaluation**
 
@@ -102,7 +146,7 @@ The ground truth database was obtained from the [ClinicalTrials.gov][clinicaltri
 
 You can find the code for this part on the Python script [External_performance_evaluation_KGNNs.py][ext_eval_script].
 
-The results for this part are available in the (External_evaluation)[Results/External_evaluation] and (CompoundDisease_predictions)[Results/CompoundDisease_predictions] folders.
+The results for this part are available in the [External_evaluation](Results/External_evaluation) and [CompoundDisease_predictions](Results/CompoundDisease_predictions) folders.
 
 ## **How to set up the environment to run the code?**
 
@@ -138,16 +182,13 @@ The main files and directories of this repository are:
 
 |File|Description|
 |:-:|---|
-|[Training_KGNN_models_Pykeen.ipynb](Training_KGNN_models_Pykeen.ipynb)|Jupyter notebook to train the KGNN models|
-|[Internal_performance_evaluation_KGNNs.py](Internal_performance_evaluation_KGNNs.py)|Python script to perform the internal evaluation of the trained KGNN models|
-|[External_performance_evaluation_KGNNs.py](External_performance_evaluation_KGNNs.py)|Python script to perform the external evaluation of the trained KGNN models|
-|[DRKG_compounds_names_preprocessing.py](External_performance_evaluation_KGNNs.py)|Python script to obtain the IDs and datasource of the compounds in the DRKG|
+|[Data/](Data/)|Folder with summary of the entities and relationships in DRKG and a csv file of the drugs in clinical trials to treat dengue|
+|[Scripts/](Scripts/)|Folder with the Python scripts to train and evaluate the KGNN models|
+|[Results/](Results/)|Folder to save performance metrics and other outputs of the KGNN models|
 |[DengueDrugRep.pdf](DengueDrugRep.pdf)|Presentation with detailed explanation of the project|
 |[Pipfile](Pipfile)|File with names and versions of packages installed in the virtual environment|
 |[requeriments.txt](requeriments.txt)|File with names and versions of packages installed in the virtual environment|
 |[Pipfile.lock](Pipfile.lock)|Json file that contains versions of packages, and dependencies required for each package|
-|[Data/](Data/)|Folder with summary of the entities and relationships in DRKG and a csv file of the drugs in clinical trials to treat dengue|
-|[Results/](Results/)|Folder to save performance metrics and other outputs of the KGNN models|
 |[img/](img/)|images and gifs|
 
 ## **Credits**
@@ -177,9 +218,10 @@ If you have comments or suggestions about this project, you can [open an issue](
 [pykeen]: https://github.com/pykeen/pykeen
 [drkg]: https://github.com/gnn4dr/DRKG
 [pykeen_evaluation]: https://pykeen.readthedocs.io/en/stable/tutorial/understanding_evaluation.html
-[training_script]: ./Training_KGNN_models_Pykeen.ipynb
-[int_eval_script]: ./Internal_performance_evaluation_KGNNs.py
-[ext_eval_script]: ./External_performance_evaluation_KGNNs.py
+[training_script]: ./Scripts/Training_KGNN_models_Pykeen.ipynb
+[int_eval_script]: ./Scripts/Internal_performance_evaluation_KGNNs.py
+[ext_eval_script]: ./Scripts/External_performance_evaluation_KGNNs.py
+[compounds_names_script]: ./Scripts/DRKG_compounds_names_preprocessing.py
 [clin_trial_drugs]: ./Data/Clinical_trials/dengue_validated_drugs_clin.csv
 [clinicaltrials]: https://clinicaltrials.gov/
 [models_doi]: https://zenodo.org/doi/10.5281/zenodo.10010151
@@ -189,3 +231,5 @@ If you have comments or suggestions about this project, you can [open an issue](
 [string]: https://string-db.org/
 [intact]: https://www.ebi.ac.uk/intact/
 [dgidb]: https://www.dgidb.org/
+[drkg_schema]: ./Data/DRKG/relation_glossary.tsv
+[names_db_compounds]: ./Data/DRKG/Names_datasources_compounds_DRKG.csv
