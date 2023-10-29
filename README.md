@@ -90,7 +90,7 @@ Next, I explored the number of compounds per database in the DRKG. The following
 </figure>
 </p>
 
-The code for this part is available in the Python script [DRKG_compounds_names_preprocessing.py][compounds_names_script].
+The code for this part is available in the Python script [EDA_DRKG_compounds_names.py][compounds_names_script].
 
 ## **Graph neural network models**
 
@@ -150,7 +150,7 @@ The results for this part are available in the [External_evaluation](Results/Ext
 
 ## **How to set up the environment to run the code?**
 
-I used [Pipenv](https://pypi.org/project/pipenv/) to create a Python virtual environment, which allows the management of python libraries and their dependencies. Each Pipenv virtual environment has a `Pipfile` with the names and versions of libraries installed in the virtual environment, and a `Pipfile.lock`, a JSON file that contains versions of libraries and their dependencies.
+I used [Pipenv][pipenv] to create a Python virtual environment, which allows the management of python libraries and their dependencies. Each Pipenv virtual environment has a `Pipfile` with the names and versions of libraries installed in the virtual environment, and a `Pipfile.lock`, a JSON file that contains versions of libraries and their dependencies.
 
 To create a Python virtual environment with libraries and dependencies required for this project, you should clone this GitHub repository, open a terminal, move to the folder containing this repository, and run the following commands:
 
@@ -185,16 +185,16 @@ The main files and directories of this repository are:
 |[Data/](Data/)|Folder with summary of the entities and relationships in DRKG and a csv file of the drugs in clinical trials to treat dengue|
 |[Scripts/](Scripts/)|Folder with the Python scripts to train and evaluate the KGNN models|
 |[Results/](Results/)|Folder to save performance metrics and other outputs of the KGNN models|
+|[img/](img/)|images and gifs|
 |[DengueDrugRep.pdf](DengueDrugRep.pdf)|Presentation with detailed explanation of the project|
 |[Pipfile](Pipfile)|File with names and versions of packages installed in the virtual environment|
 |[requeriments.txt](requeriments.txt)|File with names and versions of packages installed in the virtual environment|
 |[Pipfile.lock](Pipfile.lock)|Json file that contains versions of packages, and dependencies required for each package|
-|[img/](img/)|images and gifs|
 
 ## **Credits**
 - Developed by [Sebastián Ayala Ruano](https://sayalaruano.github.io/). I created this repository for my capstone project of the Scientific Programming course from the [MSc in Systems Biology][sysbio] at [Maastricht University][maasuni].
 
-- Part of the code for this project was inspired by the PyKEEN [tutorials][pykeen_tutorials], a [conference paper][confpaper], and this [GitHub repository][githubrepo].
+- Part of the code for this project was inspired by the PyKEEN [tutorials][pykeen_tutorials], a [conference paper][confpaper], and this [GitHub repository][githubrepo_confpaper].
 
 ## **Further details**
 More details about the biological background of the project, the interpretation of the results, and ideas for further work are available in this [presentation](denguedrugrep_report.pdf).
@@ -211,6 +211,7 @@ If you have comments or suggestions about this project, you can [open an issue](
 [maasuni]: https://www.maastrichtuniversity.nl/
 [myweb]: https://sayalaruano.github.io/
 [githubrepo]: https://github.com/sayalaruano/DengueDrugRep
+[githubrepo_confpaper]: https://github.com/dlopezyse/Drug-Repurposing-using-KGE
 [pairRE]: http://arxiv.org/abs/2011.03798
 [distmult]: https://arxiv.org/abs/1412.6575
 [transr]: http://www.aaai.org/ocs/index.php/AAAI/AAAI15/paper/download/9571/9523/
@@ -221,7 +222,7 @@ If you have comments or suggestions about this project, you can [open an issue](
 [training_script]: ./Scripts/Training_KGNN_models_Pykeen.ipynb
 [int_eval_script]: ./Scripts/Internal_performance_evaluation_KGNNs.py
 [ext_eval_script]: ./Scripts/External_performance_evaluation_KGNNs.py
-[compounds_names_script]: ./Scripts/DRKG_compounds_names_preprocessing.py
+[compounds_names_script]: ./Scripts/EDA_DRKG_compounds_names.py
 [clin_trial_drugs]: ./Data/Clinical_trials/dengue_validated_drugs_clin.csv
 [clinicaltrials]: https://clinicaltrials.gov/
 [models_doi]: https://zenodo.org/doi/10.5281/zenodo.10010151
@@ -233,3 +234,4 @@ If you have comments or suggestions about this project, you can [open an issue](
 [dgidb]: https://www.dgidb.org/
 [drkg_schema]: ./Data/DRKG/relation_glossary.tsv
 [names_db_compounds]: ./Data/DRKG/Names_datasources_compounds_DRKG.csv
+[pipenv]: https://pipenv.pypa.io/en/latest/

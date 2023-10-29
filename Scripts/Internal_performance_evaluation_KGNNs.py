@@ -1,3 +1,16 @@
+# ------------------------------------------------------------------------------------------------------
+# Script: Internal_performance_evaluation_KGNNs.py
+# Author: Sebastian Ayala Ruano
+# Date: 28-10-2021
+# Description: This script performs the internal evaluation of the trained KGNN models, 
+# and plots the losses across epochs. The performance metrics are ranked-based, including
+# the adjusted arithmetic mean rank, and the hits at 1, 3, 5 and 10.
+# Version: 1.0
+# License: MIT License
+# Usage: python Internal_performance_evaluation_KGNNs.py
+# Dependencies: Details in how to install them in the README.md file of the repository
+# References: https://github.com/sayalaruano/DengueDrugRep/blob/main/Scripts/Internal_performance_evaluation_KGNNs.py
+# ------------------------------------------------------------------------------------------------------
 #%% 
 # Import libraries
 import pandas as pd

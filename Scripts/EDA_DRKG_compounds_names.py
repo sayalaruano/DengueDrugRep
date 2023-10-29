@@ -1,3 +1,15 @@
+# ------------------------------------------------------------------------------------------------------
+# Script: EDA_DRKG_compounds_names.py
+# Author: Sebastian Ayala Ruano
+# Date: 28-10-2021
+# Description: This script does the exploratory data analysis, and obtain the IDs 
+# and datasource of the compounds in the DRKG
+# Version: 1.0
+# License: MIT License
+# Usage: python EDA_DRKG_compounds_names.py
+# Dependencies: Details in how to install them in the README.md file
+# References: https://github.com/sayalaruano/DengueDrugRep/blob/main/Scripts/EDA_DRKG_compounds_names.py
+# ------------------------------------------------------------------------------------------------------
 #%%
 # Import libraries
 import pandas as pd
