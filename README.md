@@ -139,8 +139,6 @@ All the internal evaluation metrics were calculated using the [PyKEEN][pykeen] l
 
 Check it out the code for this part of the project in the Python script [Int_performance_evaluation_KGNNs.py][int_eval_script].
 
-The results for this part are available in the [Internal_evaluation](Results/Internal_evaluation) folder.
-
 ### External evaluation
 
 To validate the KGNN models externally, I analyzed the **predicted ranked compound list against the drugs on clinical trials to treat dengue** defined in ground truth using the following metrics: 
@@ -155,7 +153,80 @@ The **ground truth database** was obtained from the [ClinicalTrials.gov][clinica
 
 You can find the code for this part on the Python script [External_performance_evaluation_KGNNs.py][ext_eval_script].
 
+## Results
+
+### Internal performance evaluation results
+
+The KGNN models were first evaluated on their **general link prediction performance** across the entire DRKG (trained for 50 epochs) 
+and then specifically for the **drug repurposing task** (trained for 10 epochs). 
+
+The following tables show that **PairRE** achieved the best overall link prediction performance on the full graph. However, when 
+focusing to drug-repurposing triplets, **DistMult** and **ERMLP** showed higher values, suggesting that while some models excel 
+at capturing global graph topology, others are better suited for specific biomedical associations.
+
+**Table 1.** Internal evaluation for all triplets (50 epochs)
+
+| Model | Adjusted Mean Rank (AMR) | Hits@1 | Hits@3 | Hits@5 | Hits@10 |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **PairRE** | 0.0179 | 0.0211 | 0.114 | 0.160 | 0.221 |
+| **ERMLP** | 0.0188 | 0.0276 | 0.079 | 0.110 | 0.164 |
+| **TransR** | 0.0193 | 0.0121 | 0.064 | 0.088 | 0.132 |
+| **DistMult** | 0.0400 | 0.0160 | 0.036 | 0.050 | 0.076 |
+
+**Table 2.** Internal evaluation for drug repurposing triplets (10 epochs)
+
+| Model | Adjusted Mean Rank (AMR) | Hits@1 | Hits@3 | Hits@5 | Hits@10 |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **DistMult** | 0.0293 | 0.0078 | 0.0188 | 0.0270 | 0.0424 |
+| **ERMLP** | 0.0310 | 0.0086 | 0.0209 | 0.0286 | 0.0461 |
+| **PairRE** | 0.0333 | 0.0041 | 0.0119 | 0.0178 | 0.0314 |
+| **TransR** | 0.0392 | 0.0013 | 0.0042 | 0.0073 | 0.0139 |
+
+The results for this part are available in the [Internal_evaluation](Results/Internal_evaluation) folder.
+
+### External performance evaluation results
+
+The following tables show how well the models ranked the **16 drugs known to be in clinical trials for Dengue** 
+(ground truth). 
+
+**Table 3.** External evaluation for all triplets
+
+| Model | First Hit | Median Hit | Last Hit |
+| :--- | :---: | :---: | :---: |
+| **ERMLP** | 26 | 1,432 | 11,354 |
+| **DistMult** | 31 | 1,407 | 10,689 |
+| **PairRE** | 219 | 1,397 | 17,149 |
+| **TransR** | 440 | 2,297 | 16,402 |
+
+**Table 4.** External evaluation for drug repurposing triplets
+
+| Model | First Hit | Median Hit | Last Hit |
+| :--- | :---: | :---: | :---: |
+| **ERMLP** | 9 | 2,849 | 15,369 |
+| **DistMult** | 17 | 2,655 | 18,005 |
+| **PairRE** | 82 | 1,352 | 5,619 |
+| **TransR** | 323 | 4,321 | 18,393 |
+
+The **ERMLP** model demonstrated the strongest predictive power for real-world applications, achieving a 
+**"First Hit" at the 9th position in the drug repurposing task**. This indicates that the model successfully ranked a 
+clinically validated drug within its top 10 predictions, outperforming more complex models like TransR in identifying 
+relevant therapeutic candidates.
+
 The results for this part are available in the [External_evaluation](Results/External_evaluation) and [CompoundDisease_predictions](Results/CompoundDisease_predictions) folders.
+
+### Predicted repurposed drugs for Dengue
+
+Based on the ERMLP model, the top three predictions for potential repurposed drugs are:
+
+1. **Betamethasone**: A corticosteroid with anti-inflammatory and immunosuppressive properties.
+2. **Dexamethasone**: A potent glucocorticoid often used to treat severe inflammation.
+3. **Aspirin**: A common nonsteroidal anti-inflammatory drug (NSAID).
+
+The identification of these compounds suggests that the models effectively captured the importance of managing the 
+**systemic inflammatory response and pain symptoms** characteristic of Dengue infection, as all top candidates are 
+established **anti-inflammatory or analgesic agents**. However, this focus on symptomatic relief suggests the models 
+may be **biased toward well-documented inflammatory pathways** in the KG, potentially overlooking compounds with direct 
+antiviral mechanisms against the dengue virus.
 
 ## How to set up the environment to run the code?
 
