@@ -14,7 +14,7 @@
         <a href="https://zenodo.org/doi/10.5281/zenodo.10010151">
         <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.10010151.svg" alt="DOI">
     </a>
-    <a href="https://colab.research.google.com/github/sayalaruano/DengueDrugRep/blob/main/Training_KGNN_models_Pykeen.ipynb">
+    <a href="https://colab.research.google.com/github/sayalaruano/DengueDrugRep/blob/main/Scripts/Training_KGNN_models_Pykeen.ipynb">
         <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="colab">
     </a>
 </p>
@@ -54,7 +54,7 @@ The following figure shows the general workflow of this project:
 </p>
 
 
-## Dataset
+## Dataset - Knowledge graph
 
 The [DRKG][drkg] is a large-scale biomedical KG that integrates information from six existing databases: [DrugBank][drugbank], [Hetionet][hetionet], Global network of biomedical relationships ([GNBR][gnbr]), [String][string], [IntAct][intact], and [DGIdb][dgidb]. This KG contains **97.238 nodes belonging to 13 entity-types** (e.g., drugs, diseases, genes, etc.) and **5.874.257 triplets belonging to 107 edge-types**. Also, the DRKG contains 24.313 compounds from 17 different databases (the list of databases' names is available in the [Names_datasources_compounds_DRKG.csv][names_db_compounds] file). 
 
@@ -63,7 +63,7 @@ The following figure shows the **metagraph** of the DRKG:
 <p align="center">
 <figure>
   <img src="./img/DRKG.png" alt="my alt text"/>
-  <figcaption><strong>Figure 2.</strong> Interactions in the DRKG. The number next to an edge indicates the number of relation-types for that entity-pair in the KG. Obtained from <a href="https://github.com/gnn4dr/DRKG">[2]</a>. </figcaption>
+  <figcaption><strong>Figure 2.</strong> InteractioMetagraph of the DRKG. The number next to an edge indicates the number of relation-types for that entity-pair in the KG. Obtained from <a href="https://github.com/gnn4dr/DRKG">[2]</a>. </figcaption>
 </figure>
 </p>
 
@@ -110,7 +110,7 @@ The following figure illustrates the **general structure of a knowledge graph ne
 <p align="center">
 <figure>
   <img src="./img/KGNN_pipeline.png" alt="my alt text"/>
-  <figcaption><strong>Figure 4.</strong> Anatomy of a Knowledge Graph Neural Network. Obtained from <a href="https://kge-tutorial-ecai2020.github.io/">[1]</a>. </figcaption>
+  <figcaption><strong>Figure 4.</strong> Structure of a Knowledge Graph Neural Network. Obtained from <a href="https://kge-tutorial-ecai2020.github.io/">[1]</a>. </figcaption>
 </figure>
 </p>
 
@@ -267,7 +267,7 @@ The main files and directories of this repository are:
 |[Scripts/](Scripts/)|Folder with the Python scripts to train and evaluate the KGNN models|
 |[Results/](Results/)|Folder to save performance metrics and other outputs of the KGNN models|
 |[img/](img/)|images and gifs|
-|[DengueDrugRep.pdf](DengueDrugRep.pdf)|Presentation with detailed explanation of the project|
+|[DengueDrugRep_presentation.pdf](DengueDrugRep_presentation.pdf)|Presentation with detailed explanation of the project|
 |[Pipfile](Pipfile)|File with names and versions of packages installed in the virtual environment|
 |[requeriments.txt](requeriments.txt)|File with names and versions of packages installed in the virtual environment|
 |[Pipfile.lock](Pipfile.lock)|Json file that contains versions of packages, and dependencies required for each package|
@@ -278,9 +278,13 @@ The main files and directories of this repository are:
 
 - Part of the code for this project was inspired by the PyKEEN [tutorials][pykeen_tutorials], a [conference paper][confpaper], and this [GitHub repository][githubrepo_confpaper].
 
+## Citation 
+
+**Ayala-Ruano, S.** (2023). **DengueDrugRep: Drug repurposing for dengue using a biomedicine knowledge graph and graph neural networks** (Version 1.0.0) [Model]. *Zenodo*. doi: [doi.org/10.5281/zenodo.10010151][models_doi].
+
 ## Further details
 
-More details about the biological background of the project, the interpretation of the results, and ideas for further work are available in this [presentation](denguedrugrep_report.pdf).
+More details about the biological background of the project, the interpretation of the results, and ideas for further work are available in this [presentation](DengueDrugRep_presentation.pdf).
 
 ## Contact
 
